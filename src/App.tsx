@@ -5,12 +5,14 @@ import { Weather, Search, Screen, UserPreferences } from './interfaces';
 import { Intro } from './components/Intro';
 import { WeatherData } from './components/WeatherData';
 import { Preferences } from './components/Preferences';
+import { Loading } from './components/Loading';
 
 export default function App() {
   const [weather, setWeather] = useState<Weather>();
   const [search, setSearch] = useState<Search>({ state: false });
   const [preferences, setPreferences] = useState<UserPreferences>({ unit: '°C' });
-  const [screen, setScreen] = useState<Screen>({ current: 'INTRO' });
+  const [screen, setScreen] = useState<Screen>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const prefs = JSON.parse(localStorage.getItem('preferences')!);
@@ -21,6 +23,8 @@ export default function App() {
     } else {
       setScreen({ current: 'INTRO' });
     }
+
+    setLoading(false);
   }, []);
 
   const handlePreferences = (prefs: UserPreferences) => {
@@ -52,9 +56,11 @@ export default function App() {
     setSearch({ state: false, results: undefined });
   };
 
+  if (loading) return <Loading />;
+
   return (
     <main className="mx-auto p-6 md:w-1/2">
-      {screen.current === 'INTRO' && (
+      {screen?.current === 'INTRO' && (
         <Intro
           search={search}
           preferences={preferences}
@@ -63,10 +69,10 @@ export default function App() {
           showWeatherData={showWeatherData}
         />
       )}
-      {screen.current === 'WEATHER' && (
+      {screen?.current === 'WEATHER' && (
         <WeatherData info={weather} preferences={preferences} handleScreen={handleScreen} />
       )}
-      {screen.current === 'PREFERENCES' && (
+      {screen?.current === 'PREFERENCES' && (
         <Preferences
           preferences={preferences}
           handlePreferences={handlePreferences}
