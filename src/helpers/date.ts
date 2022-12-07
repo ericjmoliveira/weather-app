@@ -15,8 +15,8 @@ export function getCityLocalTime(timezone: number, seconds: number) {
   return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }
 
-export function formatLocalTime() {
-  const date = new Date().toLocaleString();
+export function formatLocalTime(seconds: number) {
+  const date = new Date(seconds * 1000).toLocaleString();
 
   return `${date.slice(0, 5)} ${date.slice(10, 16)}`;
 }

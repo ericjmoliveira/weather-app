@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 import { IoIosArrowBack } from 'react-icons/io';
 
 import { Search, Screen, UserPreferences } from '../interfaces';
 import { getCountryName } from '../helpers/country';
+import { useEffect } from 'react';
 
 interface Form {
   city: string;
@@ -23,7 +25,11 @@ export function Intro({
   handleScreen,
   showWeatherData
 }: IntroProps) {
-  const { register, handleSubmit } = useForm<Form>();
+  const { register, setFocus, handleSubmit } = useForm<Form>();
+
+  useEffect(() => {
+    setFocus('city');
+  }, []);
 
   return (
     <section>
@@ -55,7 +61,7 @@ export function Intro({
             <ul className="px-6 py-2.5 list-none rounded-3xl bg-neutral-900">
               {search.results?.map((result) => (
                 <li
-                  key={result.lat}
+                  key={uuidv4()}
                   className="flex flex-col py-2.5 text-white border-b border-b-gray-700 last-of-type:border-none cursor-pointer"
                   onClick={() => showWeatherData(result.name, result.lat, result.lon)}
                 >

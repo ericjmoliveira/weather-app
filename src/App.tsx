@@ -10,7 +10,7 @@ import { Loading } from './components/Loading';
 export default function App() {
   const [weather, setWeather] = useState<Weather>();
   const [search, setSearch] = useState<Search>({ state: false });
-  const [preferences, setPreferences] = useState<UserPreferences>({ unit: '°C' });
+  const [preferences, setPreferences] = useState<UserPreferences>();
   const [screen, setScreen] = useState<Screen>();
   const [loading, setLoading] = useState(true);
 
@@ -27,9 +27,9 @@ export default function App() {
     setLoading(false);
   }, []);
 
-  const handlePreferences = (prefs: UserPreferences) => {
-    localStorage.setItem('preferences', JSON.stringify(prefs));
-    setPreferences(prefs);
+  const handlePreferences = (unit: '°C' | '°F') => {
+    localStorage.setItem('preferences', JSON.stringify({ ...preferences, unit }));
+    setPreferences({ ...preferences, unit });
   };
 
   const handleScreen = (screen: Screen) => {
@@ -43,11 +43,14 @@ export default function App() {
   };
 
   const showWeatherData = async (city: string, lat: number, lon: number) => {
-    localStorage.setItem(
-      'preferences',
-      JSON.stringify({ ...preferences, unit: '°C', location: { city, lat, lon } })
-    );
-    setPreferences({ ...preferences, unit: '°C', location: { city, lat, lon } });
+    if (!localStorage.getItem('preferences')) {
+      localStorage.setItem(
+        'preferences',
+        JSON.stringify({ ...preferences!, unit: '°C', location: { city, lat, lon } })
+      );
+    }
+
+    setPreferences({ ...preferences!, location: { city, lat, lon } });
 
     const weather = await getCityWeather(lat, lon);
 
@@ -63,18 +66,18 @@ export default function App() {
       {screen?.current === 'INTRO' && (
         <Intro
           search={search}
-          preferences={preferences}
+          preferences={preferences!}
           handleForm={handleForm}
           handleScreen={handleScreen}
           showWeatherData={showWeatherData}
         />
       )}
       {screen?.current === 'WEATHER' && (
-        <WeatherData info={weather} preferences={preferences} handleScreen={handleScreen} />
+        <WeatherData info={weather} preferences={preferences!} handleScreen={handleScreen} />
       )}
       {screen?.current === 'PREFERENCES' && (
         <Preferences
-          preferences={preferences}
+          preferences={preferences!}
           handlePreferences={handlePreferences}
           handleScreen={handleScreen}
         />

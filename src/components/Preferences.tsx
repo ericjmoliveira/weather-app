@@ -4,7 +4,7 @@ import { UserPreferences, Screen } from '../interfaces';
 
 interface PreferencesProps {
   preferences: UserPreferences;
-  handlePreferences(preferences: UserPreferences): void;
+  handlePreferences(unit: '°C' | '°F'): void;
   handleScreen(screen: Screen): void;
 }
 
@@ -28,7 +28,7 @@ export function Preferences({ preferences, handlePreferences, handleScreen }: Pr
               className={`flex items-center justify-center px-4 py-2.5 border border-none rounded-lg text-xl ${
                 preferences.unit === '°C' && 'bg-blue-500'
               } font-medium cursor-pointer transition`}
-              onClick={() => handlePreferences({ ...preferences, unit: '°C' })}
+              onClick={() => handlePreferences('°C')}
             >
               °C
             </div>
@@ -36,7 +36,7 @@ export function Preferences({ preferences, handlePreferences, handleScreen }: Pr
               className={`flex items-center justify-center px-4 py-2.5 border border-none rounded-lg text-xl ${
                 preferences.unit === '°F' && 'bg-blue-500'
               } font-medium cursor-pointer transition`}
-              onClick={() => handlePreferences({ ...preferences, unit: '°F' })}
+              onClick={() => handlePreferences('°F')}
             >
               °F
             </div>

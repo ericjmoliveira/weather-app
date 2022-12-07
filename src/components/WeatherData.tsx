@@ -95,7 +95,7 @@ export function WeatherData({ info, preferences, handleScreen }: WeatherDataProp
         </div>
       </section>
       <div className="text-right">
-        <span>{formatLocalTime()} Updated</span>
+        <span>{formatLocalTime(info?.data.dt!)} Updated</span>
       </div>
     </section>
   );
