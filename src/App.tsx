@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { searchCity, getCityWeather } from './helpers/weather';
 import { Weather, Search, Screen, UserPreferences } from './interfaces';
+import { searchCity, getCityWeather } from './helpers/weather';
+import { getPreferences, storagePreferences } from './helpers/storage';
 import { Intro } from './components/Intro';
 import { WeatherData } from './components/WeatherData';
 import { Preferences } from './components/Preferences';
@@ -15,21 +16,22 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const prefs = JSON.parse(localStorage.getItem('preferences')!);
+    const prefs: UserPreferences | undefined = getPreferences();
 
-    if (prefs) {
-      showWeatherData(prefs.location.city, prefs.location.lat, prefs.location.lon);
-      setPreferences(prefs);
-    } else {
+    if (!prefs) {
+      setPreferences({ unit: '°C', location: undefined });
       setScreen({ current: 'INTRO' });
+    } else {
+      setPreferences(prefs);
+      showWeatherData(prefs.location?.city!, prefs.location?.lat!, prefs.location?.lon!);
     }
 
     setLoading(false);
   }, []);
 
-  const handlePreferences = (unit: '°C' | '°F') => {
-    localStorage.setItem('preferences', JSON.stringify({ ...preferences, unit }));
-    setPreferences({ ...preferences, unit });
+  const handlePreferences = (prefs: UserPreferences) => {
+    setPreferences(prefs);
+    storagePreferences(prefs);
   };
 
   const handleScreen = (screen: Screen) => {
@@ -43,15 +45,7 @@ export default function App() {
   };
 
   const showWeatherData = async (city: string, lat: number, lon: number) => {
-    if (!localStorage.getItem('preferences')) {
-      localStorage.setItem(
-        'preferences',
-        JSON.stringify({ ...preferences!, unit: '°C', location: { city, lat, lon } })
-      );
-    }
-
-    setPreferences({ ...preferences!, location: { city, lat, lon } });
-
+    if (!getPreferences()) storagePreferences({ ...preferences!, location: { city, lat, lon } });
     const weather = await getCityWeather(lat, lon);
 
     setWeather({ name: city, data: weather });
@@ -66,9 +60,9 @@ export default function App() {
       {screen?.current === 'INTRO' && (
         <Intro
           search={search}
+          handlePreferences={handlePreferences}
           preferences={preferences!}
           handleForm={handleForm}
-          handleScreen={handleScreen}
           showWeatherData={showWeatherData}
         />
       )}

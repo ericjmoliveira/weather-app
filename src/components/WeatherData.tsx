@@ -36,7 +36,7 @@ export function WeatherData({ info, preferences, handleScreen }: WeatherDataProp
         </div>
         <div>
           <img
-            className="animate-pulse"
+            className="-mt-2 animate-pulse"
             src={`http://openweathermap.org/img/wn/${info?.data.weather[0].icon}@2x.png`}
             alt="Weather icon"
           />

@@ -13,16 +13,16 @@ interface Form {
 interface IntroProps {
   search: Search;
   preferences: UserPreferences;
+  handlePreferences(prefs: UserPreferences): void;
   handleForm(data: Form): void;
-  handleScreen(screen: Screen): void;
   showWeatherData(city: string, lat: number, lon: number): void;
 }
 
 export function Intro({
-  search,
   preferences,
+  search,
+  handlePreferences,
   handleForm,
-  handleScreen,
   showWeatherData
 }: IntroProps) {
   const { register, setFocus, handleSubmit } = useForm<Form>();
@@ -41,7 +41,7 @@ export function Intro({
                 <IoIosArrowBack
                   className="text-2xl text-white cursor-pointer 
                   "
-                  onClick={() => handleScreen({ current: 'PREFERENCES' })}
+                  onClick={() => {}}
                 />
               </div>
             )}
@@ -63,7 +63,13 @@ export function Intro({
                 <li
                   key={uuidv4()}
                   className="flex flex-col py-2.5 text-white border-b border-b-gray-700 last-of-type:border-none cursor-pointer"
-                  onClick={() => showWeatherData(result.name, result.lat, result.lon)}
+                  onClick={() => {
+                    handlePreferences({
+                      ...preferences,
+                      location: { city: result.name, lat: result.lat, lon: result.lon }
+                    });
+                    showWeatherData(result.name, result.lat, result.lon);
+                  }}
                 >
                   <span className="file:font-medium">{result.name}</span>
                   <span className="text-gray-300 text-xs">
