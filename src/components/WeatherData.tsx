@@ -8,6 +8,7 @@ import {
 
 import { Weather, Screen, UserPreferences } from '../interfaces';
 import { formatLocalTime, getCityCurrentTime, getCityLocalTime } from '../helpers/date';
+import { convertCelsiusToFahrenheit } from '../helpers/weather';
 
 interface WeatherDataProps {
   info: Weather | undefined;
@@ -24,12 +25,10 @@ export function WeatherData({ info, preferences, handleScreen }: WeatherDataProp
       <section className="flex justify-between mb-8">
         <div className="flex flex-col justify-between">
           {preferences.unit === '°C' ? (
-            <span className="font-thin text-7xl">
-              {Math.round(info?.data.main.temp! - 273.15)}°
-            </span>
+            <span className="font-thin text-7xl">{Math.round(info?.data.main.temp!)}°</span>
           ) : (
             <span className="font-thin text-7xl">
-              {Math.round(1.8 * (info?.data.main.temp_max! - 273.15) + 32)}°
+              {convertCelsiusToFahrenheit(info?.data.main.temp!)}°
             </span>
           )}
           <span className="mt-8 font-medium text-xl">{info?.name}</span>
@@ -45,15 +44,15 @@ export function WeatherData({ info, preferences, handleScreen }: WeatherDataProp
       <section className="flex flex-col justify-between mb-8">
         {preferences.unit === '°C' ? (
           <span className="font-medium">
-            {`${Math.round(info?.data.main.temp_max! - 273.15)}° / ${Math.round(
-              info?.data.main.temp_min! - 273.15
-            )}° Feels like ${Math.round(info?.data.main.feels_like! - 273.15)}°`}
+            {`${Math.round(info?.data.main.temp_max!)}° / ${Math.round(
+              info?.data.main.temp_min!
+            )}° Feels like ${Math.round(info?.data.main.feels_like!)}°`}
           </span>
         ) : (
           <span className="font-medium">
-            {`${Math.round(1.8 * (info?.data.main.temp_max! - 273.15) + 32)}° / ${Math.round(
-              1.8 * (info?.data.main.temp_min! - 273.15) + 32
-            )}° Feels like ${Math.round(1.8 * (info?.data.main.feels_like! - 273.15) + 32)}°`}
+            {`${convertCelsiusToFahrenheit(info?.data.main.temp_max!)}° / ${Math.round(
+              convertCelsiusToFahrenheit(info?.data.main.temp_min!)
+            )}° Feels like ${convertCelsiusToFahrenheit(info?.data.main.feels_like!)}°`}
           </span>
         )}
         <span>{getCityCurrentTime(info?.data.timezone!)}</span>
