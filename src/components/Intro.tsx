@@ -14,6 +14,7 @@ interface IntroProps {
   search: Search;
   preferences: UserPreferences;
   handlePreferences(prefs: UserPreferences): void;
+  handleScreen(screen: Screen): void;
   handleForm(data: Form): void;
   showWeatherData(city: string, lat: number, lon: number): void;
 }
@@ -22,6 +23,7 @@ export function Intro({
   preferences,
   search,
   handlePreferences,
+  handleScreen,
   handleForm,
   showWeatherData
 }: IntroProps) {
@@ -41,7 +43,7 @@ export function Intro({
                 <IoIosArrowBack
                   className="text-2xl text-white cursor-pointer 
                   "
-                  onClick={() => {}}
+                  onClick={() => handleScreen({ current: 'PREFERENCES' })}
                 />
               </div>
             )}

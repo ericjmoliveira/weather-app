@@ -61,6 +61,7 @@ export default function App() {
         <Intro
           search={search}
           handlePreferences={handlePreferences}
+          handleScreen={handleScreen}
           preferences={preferences!}
           handleForm={handleForm}
           showWeatherData={showWeatherData}
