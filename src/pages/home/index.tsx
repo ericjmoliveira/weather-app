@@ -1,33 +1,28 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { IoIosArrowBack } from 'react-icons/io';
 
-import { Search, Screen, UserPreferences } from '../interfaces';
-import { getCountryName } from '../helpers/country';
-import { useEffect } from 'react';
+import { getCountryName } from '../../helpers/country';
+import { useStore } from '../../store';
 
 interface Form {
   city: string;
 }
 
-interface IntroProps {
-  search: Search;
-  preferences: UserPreferences;
-  handlePreferences(prefs: UserPreferences): void;
-  handleScreen(screen: Screen): void;
-  handleForm(data: Form): void;
-  showWeatherData(city: string, lat: number, lon: number): void;
-}
+export default function Home() {
+  const search = useStore((state) => state.search);
+  const userPreferences = useStore((state) => state.userPreferences);
+  const updateUserPreferences = useStore((state) => state.updateUserPreferences);
+  const searchCity = useStore((state) => state.searchCity);
+  const showWeatherData = useStore((state) => state.showWeatherData);
+  const handlePage = useStore((state) => state.handlePage);
 
-export function Intro({
-  preferences,
-  search,
-  handlePreferences,
-  handleScreen,
-  handleForm,
-  showWeatherData
-}: IntroProps) {
   const { register, setFocus, handleSubmit } = useForm<Form>();
+
+  const handleForm = (data: Form) => {
+    searchCity(data.city);
+  };
 
   useEffect(() => {
     setFocus('city');
@@ -38,12 +33,12 @@ export function Intro({
       <section>
         <form onSubmit={handleSubmit((data: Form) => handleForm(data))}>
           <section className="flex items-center">
-            {preferences.location && (
+            {userPreferences.location && (
               <div className="p-2 rounded-full active:bg-neutral-900 transition">
                 <IoIosArrowBack
                   className="text-2xl text-white cursor-pointer 
                   "
-                  onClick={() => handleScreen({ current: 'PREFERENCES' })}
+                  onClick={() => handlePage('PREFERENCES')}
                 />
               </div>
             )}
@@ -66,8 +61,8 @@ export function Intro({
                   key={uuidv4()}
                   className="flex flex-col py-2.5 text-white border-b border-b-gray-700 last-of-type:border-none cursor-pointer"
                   onClick={() => {
-                    handlePreferences({
-                      ...preferences,
+                    updateUserPreferences({
+                      ...userPreferences,
                       location: { city: result.name, lat: result.lat, lon: result.lon }
                     });
                     showWeatherData(result.name, result.lat, result.lon);

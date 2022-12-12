@@ -1,3 +1,16 @@
+export interface Store {
+  weather: Weather | null;
+  search: Search;
+  page: 'HOME' | 'WEATHER' | 'PREFERENCES';
+  userPreferences: UserPreferences;
+  loading: boolean;
+  searchCity(name: string): void;
+  retrieveWeatherData(): void;
+  showWeatherData(city: string, lat: number, lon: number): void;
+  updateUserPreferences(preferences: UserPreferences): void;
+  handlePage(current: 'HOME' | 'WEATHER' | 'PREFERENCES'): void;
+}
+
 export interface Weather {
   name: string;
   data: {
@@ -26,7 +39,6 @@ export interface Weather {
     timezone: number;
   };
 }
-
 export interface Search {
   state: boolean;
   results?: [{ name: string; country: string; state: string; lat: number; lon: number }];
@@ -39,8 +51,4 @@ export interface UserPreferences {
     lat: number;
     lon: number;
   };
-}
-
-export interface Screen {
-  current: 'INTRO' | 'WEATHER' | 'PREFERENCES';
 }

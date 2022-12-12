@@ -1,21 +1,19 @@
 import { IoIosArrowBack } from 'react-icons/io';
 
-import { UserPreferences, Screen } from '../interfaces';
+import { useStore } from '../../store';
 
-interface PreferencesProps {
-  preferences: UserPreferences;
-  handlePreferences(prefs: UserPreferences): void;
-  handleScreen(screen: Screen): void;
-}
+export default function Preferences() {
+  const userPreferences = useStore((state) => state.userPreferences);
+  const updateUserPreferences = useStore((state) => state.updateUserPreferences);
+  const handlePage = useStore((state) => state.handlePage);
 
-export function Preferences({ preferences, handlePreferences, handleScreen }: PreferencesProps) {
   return (
     <section className="text-white">
       <nav className="flex items-center mb-8">
         <div className="mr-2 p-2 rounded-full active:bg-neutral-900 transition">
           <IoIosArrowBack
             className="text-2xl cursor-pointer"
-            onClick={() => handleScreen({ current: 'WEATHER' })}
+            onClick={() => handlePage('WEATHER')}
           />
         </div>
         <h1 className="text-lg font-medium">Preferences</h1>
@@ -26,17 +24,17 @@ export function Preferences({ preferences, handlePreferences, handleScreen }: Pr
           <div className="flex justify-around mb-6 pb-6 border-b border-b-gray-700">
             <div
               className={`flex items-center justify-center px-4 py-2.5 border border-none rounded-lg text-xl ${
-                preferences.unit === '°C' && 'bg-blue-500'
+                userPreferences.unit === '°C' && 'bg-blue-500'
               } font-medium cursor-pointer transition`}
-              onClick={() => handlePreferences({ ...preferences, unit: '°C' })}
+              onClick={() => updateUserPreferences({ ...userPreferences, unit: '°C' })}
             >
               °C
             </div>
             <div
               className={`flex items-center justify-center px-4 py-2.5 border border-none rounded-lg text-xl ${
-                preferences.unit === '°F' && 'bg-blue-500'
+                userPreferences.unit === '°F' && 'bg-blue-500'
               } font-medium cursor-pointer transition`}
-              onClick={() => handlePreferences({ ...preferences, unit: '°F' })}
+              onClick={() => updateUserPreferences({ ...userPreferences, unit: '°F' })}
             >
               °F
             </div>
@@ -44,10 +42,10 @@ export function Preferences({ preferences, handlePreferences, handleScreen }: Pr
         </div>
         <div
           className="flex flex-col justify-around rounded-3xl cursor-pointer"
-          onClick={() => handleScreen({ current: 'INTRO' })}
+          onClick={() => handlePage('HOME')}
         >
           <h2 className="mb-2">Location</h2>
-          <span className="font-medium">{preferences.location?.city!}</span>
+          <span className="font-medium">{userPreferences.location?.city}</span>
         </div>
       </section>
     </section>
