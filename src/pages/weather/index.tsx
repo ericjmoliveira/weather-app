@@ -23,9 +23,9 @@ export default function Weather() {
       <section className="flex justify-between mb-8">
         <div className="flex flex-col justify-between">
           {userPreferences.unit === '°C' ? (
-            <span className="font-thin text-7xl">{Math.round(weather?.data.main.temp!)}°</span>
+            <span className="font-normal text-7xl">{Math.round(weather?.data.main.temp!)}°</span>
           ) : (
-            <span className="font-thin text-7xl">
+            <span className="font-normal text-7xl">
               {convertCelsiusToFahrenheit(weather?.data.main.temp!)}°
             </span>
           )}
