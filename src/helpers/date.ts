@@ -16,7 +16,7 @@ export function getCityLocalTime(timezone: number, seconds: number) {
 }
 
 export function formatLocalTime(seconds: number) {
-  const date = new Date(seconds * 1000).toLocaleString();
+  const date = new Date(seconds * 1000).toLocaleTimeString();
 
-  return `${date.slice(0, 5)} ${date.slice(10, 16)}`;
+  return `${date.slice(0, 5)}`;
 }
