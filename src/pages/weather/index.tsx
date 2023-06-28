@@ -65,12 +65,12 @@ export default function Weather() {
       </section>
       <section className="flex justify-around mb-6 p-8 rounded-3xl bg-neutral-900">
         <div className="flex flex-col items-center justify-center">
-          <BsFillDropletFill className="mb-4 text-5xl text-blue-500" />
+          <BsFillDropletFill className="mb-4 text-5xl text-blue-500 animate-pulse" />
           <span>Humidity</span>
           <span className="font-medium">{weather?.data.main.humidity}%</span>
         </div>
         <div className="flex flex-col items-center justify-center">
-          <BsWind className="mb-4 text-5xl text-white" />
+          <BsWind className="mb-4 text-5xl text-white animate-pulse" />
           <span>Wind</span>
           <span className="font-medium">{Math.round(weather?.data.wind.speed! * 3.6)} km/h</span>
         </div>
@@ -81,14 +81,14 @@ export default function Weather() {
           <span className="font-medium">
             {getCityLocalTime(weather?.data.timezone!, weather?.data.sys.sunrise!)}
           </span>
-          <BsSunriseFill className="mt-4 text-5xl text-yellow-500" />
+          <BsSunriseFill className="mt-4 text-5xl text-yellow-500 animate-pulse" />
         </div>
         <div className="flex flex-col items-center justify-center">
           <span>Sunset</span>
           <span className="font-medium">
             {getCityLocalTime(weather?.data.timezone!, weather?.data.sys.sunset!)}
           </span>
-          <BsSunsetFill className="mt-4 text-5xl text-orange-500" />
+          <BsSunsetFill className="mt-4 text-5xl text-orange-500 animate-pulse" />
         </div>
       </section>
       <div className="text-right">
