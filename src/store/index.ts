@@ -41,6 +41,7 @@ export const useStore = create<Store>((set, get) => ({
       weather: { name: city, data },
       page: 'WEATHER',
       userPreferences,
+      search: { state: false, results: undefined },
       loading: false
     }));
     storagePreferences(userPreferences);
