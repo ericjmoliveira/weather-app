@@ -16,7 +16,16 @@ export function getCityLocalTime(timezone: number, seconds: number) {
 }
 
 export function formatLocalTime(seconds: number) {
-  const date = new Date(seconds * 1000).toLocaleTimeString();
+  const date = new Date(seconds * 1000);
 
-  return `${date.slice(0, 5)}`;
+  const month = date.getMonth() + 1;
+  const day = date.getDate() + 1;
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  const formattedTime = `${day.toString().padStart(2, '0')}/${month
+    .toString()
+    .padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+  return formattedTime;
 }
